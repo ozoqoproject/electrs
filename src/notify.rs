@@ -13,7 +13,7 @@ use util;
 
 fn connect() -> Result<Socket, Error> {
     let mut sock = Socket::new(Network::Bitcoin);
-    sock.connect("127.0.0.1", 8333)?;
+    sock.connect("127.0.0.1", 49999)?;
     Ok(sock)
 }
 

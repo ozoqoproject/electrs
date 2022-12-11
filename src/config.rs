@@ -114,7 +114,7 @@ impl Config {
         let db_path = db_dir.join(network_name);
 
         let default_daemon_port = match network_type {
-            Network::Bitcoin => 8332,
+            Network::Bitcoin => 9902,
             Network::Testnet => 18332,
             Network::Regtest => 18443,
         };

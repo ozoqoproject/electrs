@@ -32,7 +32,7 @@ def main():
             confirmed = result['confirmed'] / 1e8
             total += confirmed
             if confirmed:
-                log.info('{}/{} => {} has {:11.8f} BTC',
+                log.info('{}/{} => {} has {:11.8f} PZQ',
                          change, n, address, confirmed)
                 empty = 0
             else:

@@ -97,7 +97,6 @@ struct BlockchainInfo {
     blocks: u32,
     headers: u32,
     bestblockhash: String,
-    pruned: bool,
     initialblockdownload: bool,
 }
 
@@ -327,9 +326,6 @@ impl Daemon {
         }
         let blockchain_info = daemon.getblockchaininfo()?;
         info!("{:?}", blockchain_info);
-        if blockchain_info.pruned == true {
-            bail!("pruned node is not supported (use '-prune=0' bitcoind flag)".to_owned())
-        }
         loop {
             if daemon.getblockchaininfo()?.initialblockdownload == false {
                 break;
