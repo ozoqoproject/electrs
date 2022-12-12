@@ -163,9 +163,6 @@ impl Query {
     }
 
     pub fn estimate_fee(&self, conf_target: u16) -> Option<f64> {
-        if self.config.network_type.is_regtest() {
-            return self.get_relayfee().ok();
-        }
         if let (ref cache, Some(cache_time)) = *self.cached_estimates.read().unwrap() {
             if cache_time.elapsed() < Duration::from_secs(FEE_ESTIMATES_TTL) {
                 return cache.get(&conf_target).copied();
@@ -203,15 +200,15 @@ impl Query {
         }
     }
 
-    pub fn get_relayfee(&self) -> Result<f64> {
-        if let Some(cached) = *self.cached_relayfee.read().unwrap() {
-            return Ok(cached);
-        }
+  //  pub fn get_relayfee(&self) -> Result<f64> {
+   //     if let Some(cached) = *self.cached_relayfee.read().unwrap() {
+     //       return Ok(cached);
+      //  }
 
-        let relayfee = self.daemon.get_relayfee()?;
-        self.cached_relayfee.write().unwrap().replace(relayfee);
-        Ok(relayfee)
-    }
+      //  let relayfee = self.daemon.get_relayfee()?;
+     //   self.cached_relayfee.write().unwrap().replace(relayfee);
+     //   Ok(relayfee)
+   // }
 
     #[cfg(feature = "liquid")]
     pub fn new(

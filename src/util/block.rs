@@ -91,17 +91,7 @@ impl HeaderList {
         let mut headers_chain: Vec<BlockHeader> = vec![];
         let null_hash = BlockHash::default();
 
-        while blockhash != null_hash {
-            let header = headers_map.remove(&blockhash).unwrap_or_else(|| {
-                panic!(
-                    "missing expected blockhash in headers map: {:?}, pointed from: {:?}",
-                    blockhash,
-                    headers_chain.last().map(|h| h.block_hash())
-                )
-            });
-            blockhash = header.prev_blockhash;
-            headers_chain.push(header);
-        }
+       
         headers_chain.reverse();
 
         trace!(

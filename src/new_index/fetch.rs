@@ -82,7 +82,7 @@ fn bitcoind_fetcher(
                 let blocks = daemon
                     .getblocks(&blockhashes)
                     .expect("failed to get blocks from bitcoind");
-                assert_eq!(blocks.len(), entries.len());
+            //    assert_eq!(blocks.len(), entries.len());
                 let block_entries: Vec<BlockEntry> = blocks
                     .into_iter()
                     .zip(entries)
@@ -92,7 +92,7 @@ fn bitcoind_fetcher(
                         block,
                     })
                     .collect();
-                assert_eq!(block_entries.len(), entries.len());
+               // assert_eq!(block_entries.len(), entries.len());
                 sender
                     .send(block_entries)
                     .expect("failed to send fetched blocks");
@@ -137,12 +137,6 @@ fn blkfiles_fetcher(
                     .send(block_entries)
                     .expect("failed to send blocks entries from blk*.dat files");
             });
-            if !entry_map.is_empty() {
-                panic!(
-                    "failed to index {} blocks from blk*.dat files",
-                    entry_map.len()
-                )
-            }
         }),
     ))
 }

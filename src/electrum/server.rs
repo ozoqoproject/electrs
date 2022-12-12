@@ -261,11 +261,11 @@ impl Connection {
         Ok(json!(fee_rate / 100_000f64))
     }
 
-    fn blockchain_relayfee(&self) -> Result<Value> {
-        let relayfee = self.query.get_relayfee()?;
+//    fn blockchain_relayfee(&self) -> Result<Value> {
+//        let relayfee = self.query.get_relayfee()?;
         // convert from sat/b to BTC/kB, as expected by Electrum clients
-        Ok(json!(relayfee / 100_000f64))
-    }
+  //      Ok(json!(relayfee / 100_000f64))
+  //  }
 
     fn blockchain_scripthash_subscribe(&mut self, params: &[Value]) -> Result<Value> {
         let script_hash = hash_from_value(params.get(0)).chain_err(|| "bad script_hash")?;
@@ -400,7 +400,7 @@ impl Connection {
             "blockchain.block.headers" => self.blockchain_block_headers(&params),
             "blockchain.estimatefee" => self.blockchain_estimatefee(&params),
             "blockchain.headers.subscribe" => self.blockchain_headers_subscribe(),
-            "blockchain.relayfee" => self.blockchain_relayfee(),
+  //          "blockchain.relayfee" => self.blockchain_relayfee(),
             #[cfg(not(feature = "liquid"))]
             "blockchain.scripthash.get_balance" => self.blockchain_scripthash_get_balance(&params),
             "blockchain.scripthash.get_history" => self.blockchain_scripthash_get_history(&params),

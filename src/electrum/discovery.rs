@@ -548,21 +548,8 @@ mod tests {
             None,
         ));
         discovery.add_default_server(
-            "electrum.blockstream.info".into(),
-            vec![Service::Tcp(60001)],
-        ).unwrap();
-        discovery.add_default_server("testnet.hsmiths.com".into(), vec![Service::Ssl(53012)]).unwrap();
-        discovery.add_default_server(
-            "tn.not.fyi".into(),
-            vec![Service::Tcp(55001), Service::Ssl(55002)],
-        ).unwrap();
-        discovery.add_default_server(
-            "electrum.blockstream.info".into(),
-            vec![Service::Tcp(60001), Service::Ssl(60002)],
-        ).unwrap();
-        discovery.add_default_server(
-            "explorerzydxu5ecjrkwceayqybizmpjjznk5izmitf2modhcusuqlid.onion".into(),
-            vec![Service::Tcp(143)],
+            "electrumx.pozoqo.tech".into(),
+            vec![Service::Tcp(50001), Service::Ssl(50002)],
         ).unwrap();
 
         debug!("{:#?}", discovery);

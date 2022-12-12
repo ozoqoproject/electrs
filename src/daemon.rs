@@ -46,11 +46,11 @@ fn header_from_value(value: Value) -> Result<BlockHeader> {
     )
 }
 
-fn block_from_value(value: Value) -> Result<Block> {
-    let block_hex = value.as_str().chain_err(|| "non-string block")?;
-    let block_bytes = hex::decode(block_hex).chain_err(|| "non-hex block")?;
-    Ok(deserialize(&block_bytes).chain_err(|| format!("failed to parse block {}", block_hex))?)
-}
+//fn block_from_value(value: Value) -> Result<Block> {
+  //  let block_hex = value.as_str().chain_err(|| "non-string block")?;
+  //  let block_bytes = hex::decode(block_hex).chain_err(|| "non-hex block")?;
+  //  Ok(deserialize(&block_bytes).chain_err(|| format!("failed to parse block {}", block_hex))?)
+//}
 
 fn tx_from_value(value: Value) -> Result<Transaction> {
     let tx_hex = value.as_str().chain_err(|| "non-string tx")?;
@@ -102,7 +102,6 @@ pub struct BlockchainInfo {
     pub blocks: u32,
     pub headers: u32,
     pub bestblockhash: String,
-    pub pruned: bool,
     pub verificationprogress: f32,
     pub initialblockdownload: Option<bool>,
 }
@@ -300,19 +299,9 @@ impl Daemon {
                 &["method", "dir"],
             ),
         };
-        let network_info = daemon.getnetworkinfo()?;
-        info!("{:?}", network_info);
-        if network_info.version < 16_00_00 {
-            bail!(
-                "{} is not supported - please use bitcoind 0.16+",
-                network_info.subversion,
-            )
-        }
+  
         let blockchain_info = daemon.getblockchaininfo()?;
         info!("{:?}", blockchain_info);
-        if blockchain_info.pruned {
-            bail!("pruned node is not supported (use '-prune=0' bitcoind flag)".to_owned())
-        }
         loop {
             let info = daemon.getblockchaininfo()?;
 
@@ -425,10 +414,10 @@ impl Daemon {
         Ok(from_value(info).chain_err(|| "invalid blockchain info")?)
     }
 
-    fn getnetworkinfo(&self) -> Result<NetworkInfo> {
+   /* fn getnetworkinfo(&self) -> Result<NetworkInfo> {
         let info: Value = self.request("getnetworkinfo", json!([]))?;
         Ok(from_value(info).chain_err(|| "invalid network info")?)
-    }
+    }*/
 
     pub fn getbestblockhash(&self) -> Result<BlockHash> {
         parse_hash(&self.request("getbestblockhash", json!([]))?)
@@ -455,13 +444,7 @@ impl Daemon {
         Ok(result)
     }
 
-    pub fn getblock(&self, blockhash: &BlockHash) -> Result<Block> {
-        let block = block_from_value(
-            self.request("getblock", json!([blockhash.to_hex(), /*verbose=*/ false]))?,
-        )?;
-        assert_eq!(block.block_hash(), *blockhash);
-        Ok(block)
-    }
+   
 
     pub fn getblock_raw(&self, blockhash: &BlockHash, verbose: u32) -> Result<Value> {
         self.request("getblock", json!([blockhash.to_hex(), verbose]))
@@ -474,9 +457,7 @@ impl Daemon {
             .collect();
         let values = self.requests("getblock", &params_list)?;
         let mut blocks = vec![];
-        for value in values {
-            blocks.push(block_from_value(value)?);
-        }
+      
         Ok(blocks)
     }
 
@@ -626,10 +607,10 @@ impl Daemon {
         Ok(new_headers)
     }
 
-    pub fn get_relayfee(&self) -> Result<f64> {
+    /* pub fn get_relayfee(&self) -> Result<f64> {
         let relayfee = self.getnetworkinfo()?.relayfee;
 
         // from BTC/kB to sat/b
         Ok(relayfee * 100_000f64)
-    }
+    }*/
 }

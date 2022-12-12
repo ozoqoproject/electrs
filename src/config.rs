@@ -88,19 +88,19 @@ impl Config {
             .arg(
                 Arg::with_name("daemon_dir")
                     .long("daemon-dir")
-                    .help("Data directory of Bitcoind (default: ~/.bitcoin/)")
+                    .help("Data directory of Bitcoind (default: ~/.peercoin/)")
                     .takes_value(true),
             )
             .arg(
                 Arg::with_name("blocks_dir")
                     .long("blocks-dir")
-                    .help("Analogous to bitcoind's -blocksdir option, this specifies the directory containing the raw blocks files (blk*.dat) (default: ~/.bitcoin/blocks/)")
+                    .help("Analogous to bitcoind's -blocksdir option, this specifies the directory containing the raw blocks files (blk*.dat) (default: ~/.peercoin/blocks/)")
                     .takes_value(true),
             )
             .arg(
                 Arg::with_name("cookie")
                     .long("cookie")
-                    .help("JSONRPC authentication cookie ('USER:PASSWORD', default: read from ~/.bitcoin/.cookie)")
+                    .help("JSONRPC authentication cookie ('USER:PASSWORD', default: read from ~/.peercoin/.cookie)")
                     .takes_value(true),
             )
             .arg(
@@ -124,7 +124,7 @@ impl Config {
             .arg(
                 Arg::with_name("daemon_rpc_addr")
                     .long("daemon-rpc-addr")
-                    .help("Bitcoin daemon JSONRPC 'addr:port' to connect (default: 127.0.0.1:8332 for mainnet, 127.0.0.1:18332 for testnet and 127.0.0.1:18443 for regtest)")
+                    .help("Bitcoin daemon JSONRPC 'addr:port' to connect (default: 127.0.0.1:9902 for mainnet, 127.0.0.1:19902 for testnet and 127.0.0.1:18443 for regtest)")
                     .takes_value(true),
             )
             .arg(
@@ -245,13 +245,13 @@ impl Config {
 
         let default_daemon_port = match network_type {
             #[cfg(not(feature = "liquid"))]
-            Network::Bitcoin => 8332,
+            Network::Bitcoin => 9902,
             #[cfg(not(feature = "liquid"))]
-            Network::Testnet => 18332,
+            Network::Testnet => 19902,
             #[cfg(not(feature = "liquid"))]
             Network::Regtest => 18443,
             #[cfg(not(feature = "liquid"))]
-            Network::Signet => 38332,
+            Network::Signet => 39902,
 
             #[cfg(feature = "liquid")]
             Network::Liquid => 7041,
@@ -338,7 +338,7 @@ impl Config {
             .map(PathBuf::from)
             .unwrap_or_else(|| {
                 let mut default_dir = home_dir().expect("no homedir");
-                default_dir.push(".bitcoin");
+                default_dir.push(".peercoin");
                 default_dir
             });
         match network_type {
